@@ -7,7 +7,7 @@
     </div>
 
     <div class="ui main container">
-      <AddCar />
+      <AddCar :form="form" @onFormSubmit="onFormSubmit" />
       <Loader v-if="loader" />
       <ListCar :carros="carros" @onDelete="onDelete" />
     </div>
@@ -31,6 +31,7 @@ export default {
     return {
       url: "http://0.0.0.0:8000/api/v1/carros",
       carros: [],
+      form: { marca: "", modelo: "", ano: "", isEdit: false },
       loader: false
     };
   },
@@ -58,6 +59,27 @@ export default {
     onDelete(id) {
       // window.console.log("app delete " +id);
       this.deleteCar(id);
+    },
+    createCar(data) {
+      this.loader = true;
+
+      axios.post(this.url, {
+        marca: data.marca,
+        modelo: data.modelo,
+        ano: data.ano
+      }).then(() => {
+        this.getCars();
+      }).catch(e => {
+        alert(e);
+      });
+    },
+    onFormSubmit(data) {
+      // window.console.log("onFormSubmit", data);
+      if(data.isEdit) {
+        // teste
+      } else {
+        this.createCar(data);
+      }
     }
   },
   created() {
