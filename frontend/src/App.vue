@@ -9,7 +9,10 @@
     <div class="ui main container">
       <AddCar :form="form" @onFormSubmit="onFormSubmit" />
       <Loader v-if="loader" />
-      <ListCar :carros="carros" @onDelete="onDelete" />
+      <ListCar :carros="carros" 
+        @onDelete="onDelete"
+        @onEdit="onEdit"
+      />
     </div>
   </div>
 </template>
@@ -60,6 +63,11 @@ export default {
       // window.console.log("app delete " +id);
       this.deleteCar(id);
     },
+    onEdit(data) {
+      // window.console.log("app edit ", data);
+      this.form = data;
+      this.form.isEdit = true;
+    },
     createCar(data) {
       this.loader = true;
 
@@ -73,10 +81,25 @@ export default {
         alert(e);
       });
     },
+    editCar(data) {
+      this.loader = true;
+
+      axios.put(`${this.url}/${data.id}`, {
+        marca: data.marca,
+        modelo: data.modelo,
+        ano: data.ano
+      })
+      .then(() => {
+        this.getCars();
+      })
+      .catch(e => {
+        alert(e);
+      });
+    },
     onFormSubmit(data) {
       // window.console.log("onFormSubmit", data);
       if(data.isEdit) {
-        // teste
+        this.editCar(data);
       } else {
         this.createCar(data);
       }

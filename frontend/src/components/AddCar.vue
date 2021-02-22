@@ -4,14 +4,13 @@
       <div class="fields">
         <div class="four wide field">
           <label>Marca</label>
-          <select v-model="selectedBrand" @change="handleChange">
+          <select name="marca" v-model="form.marca" @change="handleChange">
             <option value="" selected disabled>-- Selecione a Marca --</option>
-            <option name="marca" v-for="option in options" v-bind:value="option.value" :key="option.value">
-              {{ option.text }}
+            <option v-for="marca in marcas" v-bind:value="marca.value" :key="marca.value">
+              {{ marca.text }}
             </option>
           </select>
           <br><br>
-          <p><span>Marca selecionada: {{ selectedBrand  }}</span></p>
         </div>
 
         <div class="four wide field">
@@ -29,7 +28,7 @@
         <div class="four wide field">
           <label>Ano</label>
           <input 
-            type="number" 
+            type="text" 
             name="ano" 
             placeholder="Ano"
             @change="handleChange"
@@ -38,8 +37,8 @@
         </div>
 
         <div class="two wide field">
-          <button class="ui primary button submit-button" @click="onFormSubmit">
-            Salvar
+          <button :class="btnClass" @click="onFormSubmit">
+            {{ btnName }}
           </button>
         </div>
       </div>
@@ -52,8 +51,9 @@ export default {
   name: "AddCar",
   data() {
     return {
-      selectedBrand: '',
-      options: [
+      btnName: "Salvar",
+      btnClass: "ui primary button submit-button",
+      marcas: [
         { text: 'Audi', value: 'Audi'},
         { text: 'BMW', value: 'BMW'},
         { text: 'BYD', value: 'BYD'},
@@ -109,7 +109,6 @@ export default {
       const { name, value } = event.target;
       let form = this.form;
       form[name] = value;
-      form.marca = this.selectedBrand;
       this.form = form;
     },
     onFormSubmit(e) {
@@ -120,12 +119,16 @@ export default {
         // window.console.log("pronto para enviar");
         this.$emit("onFormSubmit", this.form);
         
+        // Muda o botão para salvar
+        this.btnName = "Salvar";
+        this.btnClass = "ui primary button submit-button";
+
         this.clearFormFields();
       }
     },
     formValidation() {
       // marca
-      if(this.selectedBrand === '') {
+      if(document.getElementsByName('marca')[0].value === "") {
         alert("Informe a marca");
         return false;
       }
@@ -145,12 +148,18 @@ export default {
       return true;
     },
     clearFormFields() {
-      this.selectedBrand = '';
-      this.form.marca = this.selectedBrand;
+      this.form.marca = "";
       this.form.modelo = "";
       this.form.ano = "";
+      this.form.isEdit = false;
 
       document.querySelector('.form').reset();
+    }
+  },
+  updated() {
+    if(this.form.isEdit) {
+      this.btnName = "Atualizar";
+      this.btnClass = "ui orange button submit-button";
     }
   }
 };

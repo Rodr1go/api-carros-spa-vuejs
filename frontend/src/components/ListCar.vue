@@ -8,7 +8,7 @@
             <th>Marca</th>
             <th>Modelo</th>
             <th>Ano</th>
-            <th style="width: 148px;">Ação</th>
+            <th style="width: 165px;">Ação</th>
           </tr>
         </thead>
 
@@ -18,6 +18,7 @@
             :key="carro.id"
             :carro="carro"
             @onDelete="onDelete"
+            @onEdit="onEdit"
           />
         </tbody>
       </table>
@@ -41,6 +42,10 @@ export default {
     onDelete(id) {
       // window.console.log("Deleta carro" + id);
       this.$emit("onDelete", id);
+    },
+    onEdit(data) {
+      // window.console.log("Edita carro " + data);
+      this.$emit("onEdit", data);
     }
   }
 };
