@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Http\Resources\Carro as CarroResource;
 
+/*
+    Defines the requests used by the controller.
+*/
+use App\Http\Requests\StoreCarroRequest;
+use App\Http\Requests\UpdateCarroRequest;
+
 class CarroController extends BaseController
 {
     /**
@@ -30,7 +36,7 @@ class CarroController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCarroRequest $request)
     {
         $input = $request->all();
         $carro = Carro::create($input);
@@ -64,7 +70,7 @@ class CarroController extends BaseController
      * @param  \App\Models\Carro  $carro
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Carro $carro)
+    public function update(UpdateCarroRequest $request, Carro $carro)
     {
         $carro->update($request->all());
         
