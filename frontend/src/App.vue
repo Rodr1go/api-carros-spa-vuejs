@@ -32,7 +32,7 @@ export default {
   },
   data() {
     return {
-      url: "http://0.0.0.0:8000/api/v1/carros",
+      url: "/api/v1/carros",
       carros: [],
       form: { marca: "", modelo: "", ano: "", isEdit: false },
       loader: false
