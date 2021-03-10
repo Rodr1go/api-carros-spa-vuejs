@@ -13,6 +13,10 @@
         @onDelete="onDelete"
         @onEdit="onEdit"
       />
+      <div class="text-center">
+        <br/>
+        <Pagination :source="pagination" @navigate="navigate"></Pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -22,18 +26,23 @@ import axios from "axios";
 import AddCar from "./components/AddCar";
 import ListCar from "./components/ListCar";
 import Loader from "./components/Loader";
+import Pagination from "./components/Pagination";
 
 export default {
   name: 'App',
   components: {
     AddCar,
     ListCar,
-    Loader
+    Loader,
+    Pagination
   },
   data() {
     return {
       url: "/api/v1/carros",
-      carros: [],
+      carros: {
+        data: [],
+      },
+      pagination: {},
       form: { marca: "", modelo: "", ano: "", isEdit: false },
       loader: false
     };
@@ -41,10 +50,24 @@ export default {
   methods: {
     getCars() {
       this.loader = true;
-      axios.get(this.url).then(data => {
-        this.carros = data.data.data;
-
-        this.loader = false;
+      axios.get(this.url)
+        .then(response => {
+          this.carros = response.data.data;
+          this.pagination = response.data.data.meta;
+          this.loader = false;
+      }).catch(response => {
+        console.log(response);
+      });
+    },
+    navigate (page) {
+      this.loader = true;
+      axios.get(this.url+`?page=${page}`)
+        .then(response => {
+          this.carros = response.data.data;
+          this.pagination = response.data.data.meta;
+          this.loader = false;
+      }).catch(response => {
+        console.log(response);
       });
     },
     deleteCar(id) {

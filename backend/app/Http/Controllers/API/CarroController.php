@@ -22,10 +22,10 @@ class CarroController extends BaseController
      */
     public function index()
     {
-        $carros = Carro::all();
+        $carros = Carro::orderBy('marca', 'asc')->paginate(6);
         
         return $this->sendResponse(
-            CarroResource::collection($carros),
+            CarroResource::collection($carros)->response()->getData(true),
             'Carros recuperados com sucesso!'
         );
     }

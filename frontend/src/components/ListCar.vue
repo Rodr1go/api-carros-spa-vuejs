@@ -14,7 +14,7 @@
 
         <tbody>
           <Car 
-            v-for="carro in carros"
+            v-for="carro in carros.data"
             :key="carro.id"
             :carro="carro"
             @onDelete="onDelete"
@@ -28,6 +28,7 @@
 
 <script>
 import Car from "./Car";
+
 export default {
   name: "ListCar",
   components: {
@@ -35,7 +36,7 @@ export default {
   },
   props: {
     carros: {
-      type: Array
+      type: Object
     }
   },
   methods: {
