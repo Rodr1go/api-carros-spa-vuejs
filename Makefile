@@ -23,11 +23,11 @@ mysql:
 	@docker exec -ti docker-project-database mysql --user=$(DB_USERNAME) --password=$(DB_PASSWORD) --database=$(DB_DATABASE)
 
 migrate:
-	@docker exec -it teste-dev-php_backend_1 php artisan migrate
+	@docker exec -it api-carros-spa-vuejs_backend_1 php artisan migrate
 
 seed:
-	@docker exec -it teste-dev-php_backend_1 php artisan db:seed --class=CarroSeeder
+	@docker exec -it api-carros-spa-vuejs_backend_1 php artisan db:seed --class=CarroSeeder
 
 serve:
-	@docker exec -it teste-dev-php_backend_1 php artisan serve --host=0.0.0.0 --port=8080
+	@docker exec -it api-carros-spa-vuejs_backend_1 php artisan serve --host=0.0.0.0 --port=8080
 
